@@ -12,6 +12,8 @@ class Option extends Model
     protected $fillable = ['name'];
 
     protected $table = 'larapoll_options';
+
+    protected $with = ['poll'];
     /**
      * An option belongs to one poll
      *

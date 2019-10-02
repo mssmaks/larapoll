@@ -49,7 +49,7 @@ trait Voter
         if ($this->poll->isLocked())
             throw new VoteInClosedPollException();
 
-        if ($this->hasVoted($this->poll->id))
+        if ($this->hasVoted($this->poll))
             throw new \Exception("User can not vote again!");
 
         // if is Radio and voted for many options
@@ -81,20 +81,18 @@ trait Voter
     /**
      * Check if he can vote
      *
-     * @param $poll_id
+     * @param Poll $poll_id
      * @return bool
      */
-    public function hasVoted($poll_id)
+    public function hasVoted($poll)
     {
-        $poll = Poll::findOrFail($poll_id);
-
         if ($poll->canGuestVote()) {
             $result = DB::table('larapoll_polls')
                 ->selectRaw('count(*) As total')
                 ->join('larapoll_options', 'larapoll_polls.id', '=', 'larapoll_options.poll_id')
                 ->join('larapoll_votes', 'larapoll_votes.option_id', '=', 'larapoll_options.id')
                 ->where('larapoll_votes.user_id', request()->ip())
-                ->where('larapoll_options.poll_id', $poll_id)->count();
+                ->where('larapoll_options.poll_id', $poll->id)->count();
             return $result !== 0;
         }
 
