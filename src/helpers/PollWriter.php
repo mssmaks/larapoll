@@ -39,7 +39,7 @@ class PollWriter
 
         $voter = $poll->canGuestVote() ? new Guest(request()) : auth(config('larapoll_config.admin_guard'))->user();
 
-        if (is_null($voter) || $voter->hasVoted($poll->id) || $poll->isLocked()) {
+        if (is_null($voter) || $voter->hasVoted($poll) || $poll->isLocked()) {
             return $this->drawResult($poll);
         }
 

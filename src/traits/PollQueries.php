@@ -15,7 +15,7 @@ trait PollQueries
     public function results()
     {
         $this->results = collect();
-        foreach($this->options()->get() as $option){
+        foreach($this->options as $option){
             $this->results->push([
               "option" => $option,
               "votes" => $option->countVotes(),
